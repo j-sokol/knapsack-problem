@@ -4,25 +4,21 @@ import sys
 from itertools import combinations
 import time
 
+measured_time = []
+
 def timing(f):
     def wrap(*args):
         time1 = time.time()
         ret = f(*args)
         time2 = time.time()
-        print('{:s} function took {:.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
-
+        # print('{:s} function took {:.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
+        measured_time.append({'type': f.__name__, 'time': (time2-time1)*1000.0})
         return ret
     return wrap
 
+
+
 class InstanceSolution(object):
-    """docstring for InstanceSolution"""
-    # def __init__(self, no_items, best_cost, best_combination):
-    #     super(InstanceSolution, self).__init__()
-    #     self.no_items = no_items
-    #     self.best_cost = best_cost
-    #     self.best_combination = best_combination
-        
-    # def __init__(self, solution_line):
     def __init__(self, **kwargs):
         super(InstanceSolution, self).__init__()
         for key, value in kwargs.items():
@@ -81,7 +77,7 @@ class Instance(object):
     def get_id(self):
         return self.id
 
-    # @timing
+    @timing
     def brute_force(self):
         capacity = self.capacity
         weight_cost = self.items
@@ -98,19 +94,14 @@ class Instance(object):
                     for wc in comb:
                         best_combination[weight_cost.index(wc)] = 1
 
-
-        # print (type(best_combination))
-        # sol = InstanceSolution(self.no_items, best_cost, best_combination)
-        # return self.no_items, best_cost, best_combination
         return InstanceSolution(no_items=self.no_items, best_cost=best_cost, best_combination=best_combination)
 
-    # @timing
+    @timing
     def with_heuristic(self):
 
-        # Sort objects byb decreasing price
+        # Sort objects by decreasing price
         sorted_by_price_items = sorted(self.items, key=lambda x: x['price'], reverse=True)
 
-        # print(sorted_items)
         best_combination = {el:0 for el in range(len(sorted_by_price_items))}
         
         current_price = 0
@@ -125,16 +116,8 @@ class Instance(object):
                 current_weight += item['weight'];
                 best_combination[sorted_by_price_items[index]['id']] = 1
 
-                # print(sorted_by_price_items[index]['id'])
                 if current_weight == self.capacity:
                     break
-
-        # print (best_combination, best_combination.values())
-
-        # sorted_by_id_items = sorted(self.items, key=lambda x: x['id'])
-
-        # return self.no_items, current_price, list(best_combination.values())
-
         return InstanceSolution(no_items=self.no_items, best_cost=current_price, best_combination=list(best_combination.values()))
 
 
@@ -151,7 +134,6 @@ def main(argv):
                "Usage:", argv[0], "<instance_file> <solution_file>") 
         return 1
 
-    # print ("Instance file:\n")#, instance_file.read())
 
     instances = {}
     solutions = {}
@@ -164,10 +146,6 @@ def main(argv):
     for instance_line in instance_file:
         instance = Instance(instance_line.rstrip('\n'))
         instances.update({instance.get_id(): instance})
-
-        # print (instance.get_items())
-
-    # print (solutions)
 
 
     for id_inst, instance in instances.items():
@@ -191,7 +169,11 @@ def main(argv):
     print("Relative error across all instances: ", sum(relative_errors)/float(len(relative_errors)))
 
 
-    pass
+    # Create CSV with measured times
+    print("brute_force,heuristic")
+    for brute_force, heuristic in zip(measured_time[3::2], measured_time[4::2]):
+        print (brute_force['time'], ",", heuristic['time'], sep='')
+
 
 if __name__ == "__main__":
     main(sys.argv)
