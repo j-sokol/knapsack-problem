@@ -31,11 +31,6 @@ class InstanceSolution(object):
             self.no_items = int(parsed_solution[1])
             self.best_cost = int(parsed_solution[2])
             self.best_combination = [int(i) for i in parsed_solution[4:]]
-
-        # else:
-        #     self.no_items = no_items
-        #     self.best_cost = best_cost
-        #     self.best_combination = best_combination
         
 
 
@@ -127,11 +122,17 @@ def main(argv):
     # print (argv[1:], type (argv[1]))
 
     try:
-        instance_file = open(argv[1], "r")
-        solution_file = open(argv[2], "r")
+        instance_file = open(argv[2], "r")
+        solution_file = open(argv[3], "r")
+        mode = argv[1]
+        if mode != "-s" and mode != "-e":
+            print ("test")
+            raise Exception('Wrong mode.')
     except:
         print("Instance and/or solution file not passed as parameter.\n",
-               "Usage:", argv[0], "<instance_file> <solution_file>") 
+               "Usage:", argv[0], "-e/-s <instance_file> <solution_file>\n",
+               "    -e measures relative error compared to the reference solution\n",
+               "    -s measures speed of both brute force and heuristic computations") 
         return 1
 
 
@@ -148,32 +149,37 @@ def main(argv):
         instances.update({instance.get_id(): instance})
 
 
-    for id_inst, instance in instances.items():
-        # print(type(k))
-        # print (instance[0], instance[1].get_items())
-        print("Instance id: ", id_inst)
-        print("Brute force:")
-        brute_force = instance.brute_force()
-        print(brute_force)
-        print("Heuristic:")
-        heuristic = instance.with_heuristic()
-        print(heuristic)
-        print("Solution:")
-        # print(solutions[k].get_solution_line())
-        print(solutions[id_inst])
-        relative_error = (brute_force.get_cost() - heuristic.get_cost())/brute_force.get_cost()
-        relative_errors.append(relative_error)
-        print("Relative error: ", relative_error)
-    # print ("Solution file:\n", solution_file.read())
+    backpack_size = next(iter(solutions.values())).get_no_items()
 
-    print("Relative error across all instances: ", sum(relative_errors)/float(len(relative_errors)))
+    # Measure speed mode
+    if mode == "-s":
+        for id_inst, instance in instances.items():
+
+            brute_force = instance.brute_force()
+            heuristic = instance.with_heuristic()
+
+        # # Create CSV with measured times
+        print("{}.brute_force,{}.heuristic".format(backpack_size, backpack_size))
+        for brute_force, heuristic in zip(measured_time[3::2], measured_time[4::2]):
+            print (brute_force['time'], ",", heuristic['time'], sep='')
 
 
-    # Create CSV with measured times
-    print("brute_force,heuristic")
-    for brute_force, heuristic in zip(measured_time[3::2], measured_time[4::2]):
-        print (brute_force['time'], ",", heuristic['time'], sep='')
 
+    # Relative error mode
+    if mode == "-e":
+
+        print("{}.relative_error".format(backpack_size))
+
+
+        for id_inst, instance in instances.items():
+            heuristic = instance.with_heuristic()
+            relative_error = (solutions[id_inst].get_cost() - heuristic.get_cost())/solutions[id_inst].get_cost()
+            print(relative_error)
+
+    # print("Relative error across all instances: ", sum(relative_errors)/float(len(relative_errors)))
+
+
+    
 
 if __name__ == "__main__":
     main(sys.argv)
