@@ -1,6 +1,13 @@
-# Knapsack Problem
+# 🎒 Knapsack Problem
 
-Bruteforce and simple heuristic impelentation of well known knapsack problem.
+Impelentation using various algorithms of well known knapsack problem.
+
+
+The algorithms are:
+
+- Bruteforce 
+- simple heuristic
+- Dynamic programming
 
 
 In the end relative error of the heuristic is returned, also program outputs times how much it takes to calculate problem instance.
