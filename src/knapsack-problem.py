@@ -290,7 +290,7 @@ def main(argv):
             # brute_force = instance.brute_force()
             # heuristic = instance.with_heuristic()
             bb = instance.branch_bound()
-            dynamic = instance.dynamic2()
+            dynamic = instance.dynamic()
             fptas = instance.fptas(0.75)
             # print ("He:", heuristic)
             # print ("Br:", brute_force)
@@ -301,7 +301,7 @@ def main(argv):
 
         # # Create CSV with measured times
         print("{}.brute_force,{}.bb,{}.dynamic,{}.fptas".format(backpack_size, backpack_size, backpack_size, backpack_size))
-        for brute_force, bb, dynamic, fptas in zip(measured_time[3::4], measured_time[4::4], measured_time[5::4],measured_time[6::4]):
+        for bb, dynamic, fptas in zip(measured_time[3::3], measured_time[4::3], measured_time[5::3]):
             print (np.nan, ",", bb['time'], ",", dynamic['time'], ",", fptas['time'], sep='')
 
 
@@ -320,7 +320,7 @@ def main(argv):
     # print("Relative error across all instances: ", sum(relative_errors)/float(len(relative_errors)))
     
 
-    accuracies = [0.99, 0.9, 0.7, 0.5, 0.3]     
+    accuracies = [0.9, 0.7, 0.5, 0.3]     
 
     # FPTAS error mode
     if mode == "-fe":

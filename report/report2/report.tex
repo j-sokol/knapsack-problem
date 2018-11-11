@@ -85,18 +85,58 @@ def timing(f):
    \end{verbatim}
 
 
-\subsection{Srovnání výpočetních časů}
-
-
-Zde přikládám srovnání výpočetních časů hrubé síly, B\&B, dynamického programování a aproximativního algoritmu.
+\subsection{Výpočetní časy jednotlivych metod}
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[height=6cm]{graphs/heuristic_speeds.png}
+    \includegraphics[height=6cm]{graphs/bruteforce_speed.png}
   \end{center}
   % \caption{Graf vývoje fitness}\label{fig1}
 \end{figure}
 
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[height=6cm]{graphs/bnb_speed.png}
+  \end{center}
+  % \caption{Graf vývoje fitness}\label{fig1}
+\end{figure}
+
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[height=6cm]{graphs/dynamic_speed.png}
+  \end{center}
+  % \caption{Graf vývoje fitness}\label{fig1}
+\end{figure}
+
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[height=6cm]{graphs/fptas25_speed.png}
+  \end{center}
+  % \caption{Graf vývoje fitness}\label{fig1}
+\end{figure}
+
+
+
+\subsection{Srovnání výpočetních časů}
+
+
+Zde přikládám srovnání výpočetních časů hrubé síly, B\&B, dynamického programování a aproximativního algoritmu (FPTAS).
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[height=6cm]{graphs/all_speed_comparison.png}
+  \end{center}
+  % \caption{Graf vývoje fitness}\label{fig1}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[height=6cm]{graphs/no_brute_speed_all.png}
+  \end{center}
+  % \caption{Graf vývoje fitness}\label{fig1}
+\end{figure}
 
 
 
@@ -107,7 +147,7 @@ Zde přikládám srovnání výpočetních časů hrubé síly, B\&B, dynamické
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[height=6cm]{graphs/heuristic_speeds.png}
+    \includegraphics[height=6cm]{graphs/fptas_err_all.png}
   \end{center}
   % \caption{Graf vývoje fitness}\label{fig1}
 \end{figure}
