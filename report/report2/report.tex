@@ -85,8 +85,9 @@ def timing(f):
    \end{verbatim}
 
 
-\subsection{Výpočetní časy jednotlivych metod}
+\subsection{Výpočetní časy jednotlivých metod}
 
+Pro zajímavost přidávám grafy časů výpočtů v závislosti na velikosti batohu. Tyto grafy jsou vytvořeny pro hrubou sílu, branch and bound, dynamické programování a FPTAS s nastavenou přesností \varepsilon = 0.25 (\varepsilon \in (0;1)). 
 \begin{figure}[H]
   \begin{center}
     \includegraphics[height=6cm]{graphs/bruteforce_speed.png}
@@ -131,6 +132,13 @@ Zde přikládám srovnání výpočetních časů hrubé síly, B\&B, dynamické
   % \caption{Graf vývoje fitness}\label{fig1}
 \end{figure}
 
+Výpočet hrubou silou je až 15x pomalejší, než ostatní metody. To ale není tak překvapivé, vzhledem k tomu, co jsme se dozvěděli v minulé úloze. 
+Stále ale vidíme, že náročnost výpočtu u nových metod (Branch and bound, dynamické, FPTAS) znovu vzrůstá exponenciálně vzhledem k velikosti batohu. Ten čas je ale pořád mnohem menší, než u hrubé síly.
+
+Metoda branch and bound ve většině případů může být rychlejší, než dynamické programování. 
+
+Teoreticky by se se snižující se přesností u algoritmu FPTAS měla snižovat i výpočetní složitost - což ale v mých výsledkách nevidím.
+
 \begin{figure}[H]
   \begin{center}
     \includegraphics[height=6cm]{graphs/no_brute_speed_all.png}
@@ -142,7 +150,13 @@ Zde přikládám srovnání výpočetních časů hrubé síly, B\&B, dynamické
 
 \subsection{FPTAS - závislost chyby a výpočetního času algoritmu na přesnosti zobrazení}
 
-...
+V grafu níže jsou vykresleny očekávané, (tato hranice byla vypočítaná předem) a průměrné, maximální a minimální relativní chyby (tyto hodnoty vnikly z dat). Minimální relativní chyba vždy byla nejmenší hodnota. Maximální relativní chyba je horní krajní hodnota. Očekávaná rel. chyba byla nastavena takto:
+
+ \begin{itemize}
+\item 75 pro FPTAS25,
+\item 50 pro FPTAS50,
+\item 25 pro FPTAS75.
+ \end{itemize}
 
 
 \begin{figure}[H]
@@ -153,11 +167,16 @@ Zde přikládám srovnání výpočetních časů hrubé síly, B\&B, dynamické
 \end{figure}
 
 
+Jak je z grafů možné vidět, tak se průměrná chyba je hluboko pod tou očekávanou. I ty maximální se pohybovaly pod tou očekávanou.
+
 
 \section{Shrnutí a výsledky}
 
-Pomocí metody hrubé síly jsem dosáhl pouze velikosti 27 - při velikosti bahohu již vypočtení testovacích dat trvalo více než 24 hodin. Díky tomu v grafech větší data pro měření rychlostí nejsou přiložena. 
-Relativní chyba používá data z referenčního řešení, a díky tomu, že řešení heuristikou je mnohem rychlejší, než hrubou silou, proto data obsahuje pro všechny zadaná data.
+Pomocí vykreslování grafů jsem dosáhl pouze velikosti 30 - při větší velikosti bahohu již vypočtení testovacích dat trvalo více než 24 hodin. Díky tomu v grafech větší data pro měření rychlostí nejsou přiložena. 
+
+Cílem této úlohy bylo urychlit výpočet řešení - což bylo, ať už u metody větvení, nebo dynamického programování, úspěšné. 
+
+Zrychlení u metody FPTAS už není tak velké - bylo rychlejší, než dynamické programování, ale pořád pomalejší, než Branch and Bound. Dle mého názoru za to může právě ta paměťová náročnost.
 
 Pro vytváření grafů bylo využito Python notebooku, který je přiložen v adresáři \textbf{report/}. Grafy jsou vykresleny pomocí knihovny \textbf{mathplotlib}.
 

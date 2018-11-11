@@ -320,7 +320,7 @@ def main(argv):
     # print("Relative error across all instances: ", sum(relative_errors)/float(len(relative_errors)))
     
 
-    accuracies = [0.9, 0.7, 0.5, 0.3]     
+    accuracies = [0.75, 0.5, 0.25]     
 
     # FPTAS error mode
     if mode == "-fe":
