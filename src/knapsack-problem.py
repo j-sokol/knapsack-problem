@@ -250,18 +250,60 @@ class Instance(object):
 
         return dynamic
 
+
+
+def parametrized(instance_file, algorithm):
+    instances = {}
+    solutions = {}
+    relative_errors = []
+
+
+    for instance_line in instance_file:
+        instance = Instance(instance_line.rstrip('\n'))
+        instances.update({instance.get_id(): instance})
+    
+    print("knapsack_id,algorithm,no_items,price,time_ms")
+
+
+    # backpack_size = next(iter(solutions.values())).get_no_items()
+    for id_inst, instance in instances.items():
+        if algorithm == "heuristic":
+            computed = instance.with_heuristic()
+        elif algorithm == "branch_bound":
+            computed = instance.branch_bound()
+        elif algorithm == "dynamic":
+            computed = instance.dynamic()
+        elif algorithm == "fptas":
+            computed = instance.fptas(75)
+        elif algorithm == "brute_force":
+            computed = instance.brute_force()
+        time = measured_time[-1]['time']
+        print(f'{id_inst},{algorithm},{instance.no_items},{computed.get_cost()},{time}')
+
+    pass
+
 def main(argv):
+
+
 
     try:
         instance_file = open(argv[2], "r")
-        solution_file = open(argv[3], "r")
         mode = argv[1]
-        if mode != "-s" and mode != "-e" and mode != "-fe" and mode != "-fs":
-            print ("test")
+        if mode == "-s" and mode == "-e" and mode == "-fe" and mode == "-fs":
+            solution_file = open(argv[3], "r")
+
+        elif mode == "-p":
+            algorithm = argv[3]
+
+            parametrized(instance_file, algorithm)
+            return
+        else:
             raise Exception('Wrong mode.')
-    except:
+
+    except TypeError:
         print("Instance and/or solution file not passed as parameter.\n",
                "Usage:", argv[0], "-e/-s <instance_file> <solution_file>\n",
+               "    -p <instance_file> [heuristic/dynamic/fptas/branch_bound/brute_force] parametrized mode\n",
                "    -e measures relative error compared to the reference solution\n",
                "    -s measures speed of both brute force and heuristic computations\n",
                "    -fe measures error FPTAS algorithm depending on accurancy\n",
