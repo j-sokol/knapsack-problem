@@ -44,7 +44,7 @@ def parametrized(instance_file, algorithm):
         elif algorithm == "brute_force":
             computed = instance.brute_force()
         time = measured_time[-1]['time']
-        print(f'{id_inst},{algorithm},{instance.no_items},{computed.get_cost()}')
+        print(f'{id_inst},{algorithm},{instance.no_items},{computed.get_cost()},{time}')
 
 
 def genetic(instance_file, xover_probability=0.4, mutation_probability=0.1, elitism_count=10,
